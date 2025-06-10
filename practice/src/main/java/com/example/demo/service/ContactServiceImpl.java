@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +28,13 @@ public class ContactServiceImpl implements ContactService {
         contact.setBuildingName(contactForm.getBuildingName());
         contact.setContactType(contactForm.getContactType());
         contact.setBody(contactForm.getBody());
+        contact.setCreatedAt(LocalDateTime.now());
 
         contactRepository.save(contact);
+    }
+    
+    @Override
+    public List<Contact> getAllContacts(){
+    	return contactRepository.findAll();
     }
 }
