@@ -37,4 +37,38 @@ public class ContactServiceImpl implements ContactService {
     public List<Contact> getAllContacts(){
     	return contactRepository.findAll();
     }
+    
+    @Override
+    public Contact findById(Long id) {
+        return contactRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("指定されたお問い合わせが見つかりません"));
+    }
+    
+    @Override
+    public Contact getContactById(Long id) {
+        return contactRepository.findById(id).orElse(null);
+    }
+    
+    @Override
+    public void updateContact(Long id, Contact updatedContact) {
+        Contact existing = contactRepository.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setLastName(updatedContact.getLastName());
+            existing.setFirstName(updatedContact.getFirstName());
+            existing.setEmail(updatedContact.getEmail());
+            existing.setPhone(updatedContact.getPhone());
+            existing.setZipCode(updatedContact.getZipCode());
+            existing.setAddress(updatedContact.getAddress());
+            existing.setBuildingName(updatedContact.getBuildingName());
+            existing.setContactType(updatedContact.getContactType());
+            existing.setBody(updatedContact.getBody());
+            existing.setUpdatedAt(LocalDateTime.now());
+            contactRepository.save(existing);
+        }
+    }
+    
+    @Override
+    public void deleteContact(Long id) {
+        contactRepository.deleteById(id);
+    }
 }
