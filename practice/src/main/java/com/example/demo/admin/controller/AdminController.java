@@ -35,7 +35,7 @@ public class AdminController {
     
     @GetMapping("/admin/contacts/{id}/edit")
     public String editContact(@PathVariable Long id, Model model) {
-        Contact contact = contactService.getContactById(id);
+        Contact contact = contactService.findById(id);
         model.addAttribute("contact", contact);
         return "admin/editContact";
     }
