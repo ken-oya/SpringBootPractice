@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.entity.Contact;
 import com.example.demo.form.ContactForm;
@@ -36,5 +38,34 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public List<Contact> getAllContacts(){
     	return contactRepository.findAll();
+    }
+    
+    @Override
+    public Contact findById(Long id) {
+        return contactRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"指定されたお問い合わせが見つかりません"));
+    }
+    
+    @Override
+    public void updateContact(Long id, Contact updatedContact) {
+        Contact existing = contactRepository.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setLastName(updatedContact.getLastName());
+            existing.setFirstName(updatedContact.getFirstName());
+            existing.setEmail(updatedContact.getEmail());
+            existing.setPhone(updatedContact.getPhone());
+            existing.setZipCode(updatedContact.getZipCode());
+            existing.setAddress(updatedContact.getAddress());
+            existing.setBuildingName(updatedContact.getBuildingName());
+            existing.setContactType(updatedContact.getContactType());
+            existing.setBody(updatedContact.getBody());
+            existing.setUpdatedAt(LocalDateTime.now());
+            contactRepository.save(existing);
+        }
+    }
+    
+    @Override
+    public void deleteContact(Long id) {
+        contactRepository.deleteById(id);
     }
 }
