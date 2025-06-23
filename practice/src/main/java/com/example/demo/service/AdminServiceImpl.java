@@ -29,6 +29,5 @@ public class AdminServiceImpl implements AdminService {
         admin.setPassword(encodedPassword);
 
         adminRepository.save(admin);
-        adminRepository.save(admin);
     }
 }
