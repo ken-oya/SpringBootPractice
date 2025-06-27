@@ -72,8 +72,11 @@
 		</form>
 	</div>
 	<br>
-	<form action="/admin/signout" method="post">
-		<button type="submit">ログアウト</button>
+	<form th:action="@{/admin/logout}" method="post" style="display:inline">
+	    <input type="hidden"
+	           th:name="${_csrf.parameterName}"
+	           th:value="${_csrf.token}" />
+	    <button type="submit">ログアウト</button>
 	</form>
 
 </body>
